@@ -63,6 +63,7 @@ public class BillGUI extends javax.swing.JFrame {
         lblcc = new javax.swing.JLabel();
         lblcc.setFont(new Font("Times New Roman", Font.BOLD, 12));
         tfcc = new javax.swing.JTextField();
+        tfcc.setEditable(false);
         btnCalculate = new javax.swing.JButton();
         btnCalculate.setForeground(Color.BLACK);
         btnCalculate.setBackground(new Color(100, 149, 237));
@@ -333,13 +334,14 @@ public class BillGUI extends javax.swing.JFrame {
     }
 
     private void btnCalculateActionPerformed(java.awt.event.ActionEvent evt) {
+    	BillOperation bo = new BillOperation();
         double arrears = Double.parseDouble(tfarrears.getText());
         double currentmeterreading = Double.parseDouble(tfcmr.getText()); // convert String to double
         double previousmeterreading = Double.parseDouble(tfpmr.getText());
-        double currentcharge = Double.parseDouble(tfcc.getText());
-        
-        double totalunit = currentmeterreading - previousmeterreading;
+         double totalunit = currentmeterreading - previousmeterreading;
         tftunit.setText(String.valueOf(totalunit));
+		double currentcharge = bo.calctariff(totalunit);
+        tfcc.setText(String.valueOf(currentcharge));
         double totalbill = arrears + currentcharge;
         tftbill.setText(String.valueOf(totalbill));
     }
@@ -392,7 +394,7 @@ public class BillGUI extends javax.swing.JFrame {
         BillOperation billOperation = new BillOperation();
         
         taDisplay.setText("BILL LIST\n");
-        taDisplay.append("\nACC NUM \tBILL DATE \tNAME \tADDRESS \tARREARS \tCMR \tPMR \tT.UNIT \tC.CHARGE \tT.BILL\n");
+        taDisplay.append("\nACC NUM \tBILL DATE \tNAME \tADDRESS \t\tARREARS \t\tCMR \t\tPMR \t\tT.UNIT \t\tC.CHARGE \t\tT.BILL\n");
         
         tblModel = (DefaultTableModel) tblDisplay.getModel(); 
         tblModel.setRowCount(0);
@@ -412,7 +414,7 @@ public class BillGUI extends javax.swing.JFrame {
                 String totalunit = String.valueOf(bs.get(i).getTotalunit());
                 String currentcharge = String.valueOf(bs.get(i).getCurrentcharge()); 
                 String totalbill = String.valueOf(bs.get(i).getTotalbill());
-                taDisplay.append(accountnumber+"\t"+billdate+"\t"+name+"\t"+address+"\t"+arrears+"\t"+currentmeterreading+"\t"+previousmeterreading+"\t"+totalunit+"\t"+currentcharge+"\t"+totalbill+"\n");
+                taDisplay.append(accountnumber+"\t"+billdate+"\t"+name+"\t"+address+"\t\t"+arrears+"\t\t"+currentmeterreading+"\t\t"+previousmeterreading+"\t\t"+totalunit+"\t\t"+currentcharge+"\t\t"+totalbill+"\n");
                 System.out.printf("%-6d %-25s %-10s %-25s %-10s %8.2f %8.2f  %8.2f  %8.2f \n",bs.get(i).getAccountnumber(),billdate, name, address, bs.get(i).getArrears(), bs.get(i).getCurrentmeterreading(), bs.get(i).getPreviousmeterreading(), bs.get(i).getTotalunit(), bs.get(i).getCurrentcharge(), bs.get(i).getTotalbill());
                 
                 String [] data = {accountnumber, billdate, name, address, arrears, currentmeterreading, previousmeterreading, totalunit, currentcharge, totalbill};
@@ -469,7 +471,7 @@ public class BillGUI extends javax.swing.JFrame {
             
       
             taDisplay.setText("BILLING RECORD\n");
-            taDisplay.append("\nACC NUM \tBILL DATE \tNAME \tADDRESS \tARREARS \tC.MeterReading \tP.MeterReading \tT.UNIT \tC.CHARGE \tT.BILL\n");
+            taDisplay.append("\nACC NUM \tBILL DATE \tNAME \tADDRESS \tARREARS \tC.MeterReading \tP.MeterReading \tT.UNIT \tC.CHARGE \t\tT.BILL\n");
             taDisplay.append(accountnumber+"\t"+billdate+"\t"+name+"\t"+address+"\t"+arrears+"\t"+currentmeterreading+"\t\t"+previousmeterreading+"\t\t"+totalunit+"\t"+currentcharge+"\t"+totalbill+"\n");
             JOptionPane.showMessageDialog(null, "The record of "+accountnumber+" is found successfully");
         }

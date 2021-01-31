@@ -142,6 +142,31 @@
 	        fw.close();
 	    } //addAllRecordInFile
 	    
+	    public double calctariff(double c){
+	        double sum=0;
+	        double[] a=new double[5];
+	        a[0]=200*0.218;
+	        a[1]=100*0.334;
+	        a[2]=300*0.516;
+	        a[3]=300*0.546;
+	        
+	       if(c<=200){
+	       sum=c*0.218;
+	       }else if(c>200&&c<=300){
+	       sum=a[0]+((c-200)*0.334);
+	       }else if(c>300&&c<=600){
+	       sum=a[0]+a[1]+((c-300)*0.516);
+	       }
+	       else if(c>600&&c<=900){
+	       sum=a[0]+a[1]+a[2]+((c-600)*0.546);
+	       } 
+	       else if(c>=901){
+	       sum=a[0]+a[1]+a[2]+a[3]+((c-900)*0.571);
+	       }
+	        
+	         return sum;
+	     }
+	    
 	} // class BillOperation
 
 
