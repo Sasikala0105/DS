@@ -89,8 +89,8 @@ public class Login {
 				
 				if(username.equals("Sasikala") && pass.equals("Sasikala98"))
 				{
-					BillGUI bg = new BillGUI();
-						bg.setVisible(true);
+					Tariff t = new Tariff();
+						t.setVisible(true);
 				}
 				else
 				{

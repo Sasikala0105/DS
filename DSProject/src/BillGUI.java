@@ -1,6 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -398,6 +399,7 @@ public class BillGUI extends javax.swing.JFrame {
         
         tblModel = (DefaultTableModel) tblDisplay.getModel(); 
         tblModel.setRowCount(0);
+        
         try 
         {
             
