@@ -119,29 +119,6 @@
 	        return b;
 	    } //findRecord
 	    
-	    public void addAllRecordInFile(ArrayList <Bill> billings) throws IOException
-	    {
-	        File fileName = new File("billing.txt");
-	        FileWriter fw = new FileWriter(fileName);
-	        PrintWriter pw = new PrintWriter(fw);
-	        
-	        for (int i=0; i < billings.size(); i++)
-	        {
-	            pw.println(billings.get(i).getAccountnumber());
-	            pw.println(billings.get(i).getBilldate());
-	            pw.println(billings.get(i).getName());
-	            pw.println(billings.get(i).getAddress());
-	            pw.println(billings.get(i).getArrears());
-	            pw.println(billings.get(i).getCurrentmeterreading());
-	            pw.println(billings.get(i).getPreviousmeterreading());
-	            pw.println(billings.get(i).getTotalunit());
-	            pw.println(billings.get(i).getCurrentcharge());
-	            pw.println(billings.get(i).getTotalbill());
-	        }
-	        pw.close();
-	        fw.close();
-	    } //addAllRecordInFile
-	    
 	    public double calctariff(double c){
 	        double sum=0;
 	        double[] a=new double[5];
@@ -166,6 +143,31 @@
 	        
 	         return sum;
 	     }
+	    
+	    public void addAllRecordInFile(ArrayList <Bill> billings) throws IOException
+	    {
+	        File fileName = new File("billing.txt");
+	        FileWriter fw = new FileWriter(fileName);
+	        PrintWriter pw = new PrintWriter(fw);
+	        
+	        for (int i=0; i < billings.size(); i++)
+	        {
+	            pw.println(billings.get(i).getAccountnumber());
+	            pw.println(billings.get(i).getBilldate());
+	            pw.println(billings.get(i).getName());
+	            pw.println(billings.get(i).getAddress());
+	            pw.println(billings.get(i).getArrears());
+	            pw.println(billings.get(i).getCurrentmeterreading());
+	            pw.println(billings.get(i).getPreviousmeterreading());
+	            pw.println(billings.get(i).getTotalunit());
+	            pw.println(billings.get(i).getCurrentcharge());
+	            pw.println(billings.get(i).getTotalbill());
+	        }
+	        pw.close();
+	        fw.close();
+	    } //addAllRecordInFile
+	    
+	
 	    
 	} // class BillOperation
 
