@@ -1,6 +1,7 @@
 
 public class Bill 
 	{
+	//3 types of data int,string,,double
 	    private int accountnumber;
 	    private String billdate;
 	    private String name;
@@ -12,6 +13,9 @@ public class Bill
 	    private double currentcharge;
 	    private double totalbill;
 
+	    //constructor
+	    //constructor used to store all the data into one object
+	    //sequence in constructor is important
 	    public Bill(int accountnumber, String billdate, String name, String address, double arrears, double currentmeterreading, double previousmeterreading, double totalunit, double currentcharge, double totalbill) {
 	        this.accountnumber = accountnumber;
 	        this.billdate = billdate;
@@ -26,7 +30,7 @@ public class Bill
 	    
 			
 		}
-
+//getter method
 		public int getAccountnumber() {
 	        return accountnumber;
 	    }

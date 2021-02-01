@@ -11,13 +11,16 @@
 
 	public class BillOperation 
 	{
-	    
-	    public void addRecord(Bill b) throws IOException 
+	    //method public void addRecord
+		//Parameter = bill b
+		//store into one record
+	    public void addRecord(Bill b) throws IOException //must have exception because it involves file..if not cannot run
 	    {  // b = bill
-	        File fileName = new File("billing.txt");
-	        FileWriter fw = new FileWriter(fileName, true);
-	        PrintWriter pw = new PrintWriter(fw);
-	        
+	    	//store in file text
+	        File fileName = new File("billing.txt");//creating a txtfile to store data
+	        FileWriter fw = new FileWriter(fileName, true);//parameter based on fileName
+	        PrintWriter pw = new PrintWriter(fw);//
+	        //store data//getter method
 	        pw.println(b.getAccountnumber());
 	        pw.println(b.getBilldate());
 	        pw.println(b.getName());
@@ -28,7 +31,7 @@
 	        pw.println(b.getTotalunit());
 	        pw.println(b.getCurrentcharge());
 	        pw.println(b.getTotalbill());
-	        
+	        //close the file
 	        pw.close();
 	        fw.close();
 	        
@@ -43,14 +46,14 @@
 	        FileReader fr = new FileReader(fileName);
 	        BufferedReader br =  new BufferedReader(fr);
 	        
-	        String line = br.readLine(); 
-	        while (line != null)
+	        String line = br.readLine(); //one by one as long as got data.
+	        while (line != null)//if there is no data then will return null..//will read all the data in line
 	        {
 	            //System.out.println(line);
-	            int accountnumber = Integer.parseInt(line); 
-	            String billdate = br.readLine(); 
-	            String name = br.readLine();
-	            String address = br.readLine(); 
+	            int accountnumber = Integer.parseInt(line); //convert to integer
+	            String billdate = br.readLine();//to read data in one line in txt file billing 
+	            String name = br.readLine();//3rd line
+	            String address = br.readLine(); //4th line
 	            double arrears = Double.parseDouble(br.readLine());
 	            double currentmeterreading = Double.parseDouble(br.readLine()); 
 	            double previousmeterreading = Double.parseDouble(br.readLine()); 
@@ -59,12 +62,12 @@
 	            double totalbill = Double.parseDouble(br.readLine());
 	            
 	            b = new Bill(accountnumber, billdate, name, address, arrears, currentmeterreading, previousmeterreading, totalunit, currentcharge, totalbill);
-	            billings.add(b);  // store into arraylist
+	            billings.add(b);  // store data into arraylist //method in arraylist = add
 	            line = br.readLine();
 	        } // while (line != null)
 	        br.close();
 	        fr.close();
-	        return billings;
+	        return billings;//return billings bcz we store data already
 	        
 	    } // displayAllRecord
 	    
@@ -77,7 +80,7 @@
 	        FileReader fr = new FileReader(fileName);
 	        BufferedReader br =  new BufferedReader(fr);
 	        
-	        String line = br.readLine();
+	        String line = br.readLine();//will read one by one
 	        while (line != null)
 	        {
 	            //System.out.println(line);
@@ -121,24 +124,24 @@
 	    
 	    public double calctariff(double c){
 	        double sum=0;
-	        double[] a=new double[5];
-	        a[0]=200*0.218;
-	        a[1]=100*0.334;
-	        a[2]=300*0.516;
-	        a[3]=300*0.546;
+	        double[] m=new double[5];
+	        m[0] = 200*0.218;
+	        m[1] = 100*0.334;
+	        m[2] = 300*0.516;
+	        m[3] = 300*0.546;
 	        
 	       if(c<=200){
 	       sum=c*0.218;
-	       }else if(c>200&&c<=300){
-	       sum=a[0]+((c-200)*0.334);
-	       }else if(c>300&&c<=600){
-	       sum=a[0]+a[1]+((c-300)*0.516);
+	       }else if(c>200 && c<=300){
+	       sum=m[0]+((c-200)*0.334);
+	       }else if(c>300 && c<=600){
+	       sum=m[0]+m[1]+((c-300)*0.516);
 	       }
-	       else if(c>600&&c<=900){
-	       sum=a[0]+a[1]+a[2]+((c-600)*0.546);
+	       else if(c>600 && c<=900){
+	       sum=m[0]+m[1]+m[2]+((c-600)*0.546);
 	       } 
 	       else if(c>=901){
-	       sum=a[0]+a[1]+a[2]+a[3]+((c-900)*0.571);
+	       sum=m[0]+m[1]+m[2]+m[3]+((c-900)*0.571);
 	       }
 	        
 	         return sum;

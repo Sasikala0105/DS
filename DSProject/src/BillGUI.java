@@ -1,7 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -94,7 +93,7 @@ public class BillGUI extends javax.swing.JFrame {
         btnDelete.setBackground(new Color(100, 149, 237));
         btnDelete.setFont(new Font("Book Antiqua", Font.BOLD, 12));
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblDisplay = new javax.swing.JTable();
+        tableDisplay = new javax.swing.JTable();
         btnExit = new javax.swing.JButton();
         btnExit.setForeground(Color.BLACK);
         btnExit.setBackground(new Color(100, 149, 237));
@@ -129,7 +128,7 @@ public class BillGUI extends javax.swing.JFrame {
         btnStore.setText("STORE DATA");
         btnStore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
+                btnStoreActionPerformed(evt);
             }
         });
 
@@ -168,7 +167,7 @@ public class BillGUI extends javax.swing.JFrame {
             }
         });
 
-        tblDisplay.setModel(new javax.swing.table.DefaultTableModel(
+        tableDisplay.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null}
 
@@ -177,7 +176,7 @@ public class BillGUI extends javax.swing.JFrame {
                 "Account Number", "Bill Date", "Name", "Address", "Arrears", "Current Meter Reading", "Previous Meter Reading", "Total Unit", "Current Charge", "Total Bill"
             }
         ));
-        jScrollPane3.setViewportView(tblDisplay);
+        jScrollPane3.setViewportView(tableDisplay);
 
         btnExit.setText("EXIT");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
@@ -213,8 +212,8 @@ public class BillGUI extends javax.swing.JFrame {
         						.addGroup(layout.createSequentialGroup()
         							.addComponent(btnCalculate)
         							.addGap(21)
-        							.addComponent(btnStore, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-        							.addGap(34)
+        							.addComponent(btnStore, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+        							.addGap(18)
         							.addComponent(btnDisplayAll, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)
         							.addGap(31)
         							.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
@@ -322,11 +321,11 @@ public class BillGUI extends javax.swing.JFrame {
         			.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
         			.addContainerGap())
         );
-        taDisplay = new JTextArea();
-        scrollPane.setViewportView(taDisplay);
+        txtareaDisplay = new JTextArea();
+        scrollPane.setViewportView(txtareaDisplay);
         
-                taDisplay.setColumns(20);
-                taDisplay.setRows(5);
+                txtareaDisplay.setColumns(20);
+                txtareaDisplay.setRows(5);
         getContentPane().setLayout(layout);
 
         pack();
@@ -335,11 +334,15 @@ public class BillGUI extends javax.swing.JFrame {
     }
 
     private void btnCalculateActionPerformed(java.awt.event.ActionEvent evt) {
+    	//
     	BillOperation bo = new BillOperation();
+    	//convert string to double..pass to one variable which is double arrears
         double arrears = Double.parseDouble(tfarrears.getText());
         double currentmeterreading = Double.parseDouble(tfcmr.getText()); // convert String to double
         double previousmeterreading = Double.parseDouble(tfpmr.getText());
-         double totalunit = currentmeterreading - previousmeterreading;
+        //calculation of totalunit
+        double totalunit = currentmeterreading - previousmeterreading;
+        //converting string to double
         tftunit.setText(String.valueOf(totalunit));
 		double currentcharge = bo.calctariff(totalunit);
         tfcc.setText(String.valueOf(currentcharge));
@@ -347,14 +350,15 @@ public class BillGUI extends javax.swing.JFrame {
         tftbill.setText(String.valueOf(totalbill));
     }
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        
+    private void btnStoreActionPerformed(java.awt.event.ActionEvent evt) {
+        //creating object for bill
+    	//creating object for billoperation
         Bill billing;
         BillOperation billOperation = new BillOperation();
         
         int accountnumber = Integer.parseInt(tfaccnum.getText()); // get data in String from textfield acc num and convert into integer
         String billdate = tfbilldate.getText();
-        String name = tfname.getText(); // get data in String from textfield name
+        String name = tfname.getText(); // get data in String from textfield name //since its a string we dont have to convert it
         String address = tfadd.getText(); 
         double arrears = Double.parseDouble(tfarrears.getText()); // get data in String from textfield arrears and convert into double
         double currentmeterreading = Double.parseDouble(tfcmr.getText());
@@ -363,14 +367,15 @@ public class BillGUI extends javax.swing.JFrame {
         double totalunit = currentmeterreading - previousmeterreading;
         double totalbill = arrears + currentcharge;
         
-        // store a record into an object
+        
         billing = new Bill(accountnumber, billdate, name, address, arrears, currentmeterreading, previousmeterreading, totalunit, currentcharge, totalbill);
         try {
+        	
             billOperation.addRecord(billing); // add one record into text file
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-        JOptionPane.showMessageDialog(null, "The record has been saved successfully in the text file");
+        JOptionPane.showMessageDialog(null, "The record has been saved successfully in the text file.");
     }
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
@@ -385,8 +390,8 @@ public class BillGUI extends javax.swing.JFrame {
         tftunit.setText("");
         tfcc.setText("");
         tftbill.setText("");
-        taDisplay.setText("");
-        tblModel.setRowCount(0); // row in the table will be zero
+        txtareaDisplay.setText("");
+        tblModel.setRowCount(0); 
     }
 
     private void btnDisplayAllActionPerformed(java.awt.event.ActionEvent evt) {
@@ -394,16 +399,17 @@ public class BillGUI extends javax.swing.JFrame {
         ArrayList <Bill> bs;
         BillOperation billOperation = new BillOperation();
         
-        taDisplay.setText("BILL LIST\n");
-        taDisplay.append("\nACC NUM \tBILL DATE \tNAME \tADDRESS \t\tARREARS \t\tCMR \t\tPMR \t\tT.UNIT \t\tC.CHARGE \t\tT.BILL\n");
+        txtareaDisplay.setText("BILL LIST\n");
+       
+        txtareaDisplay.append("\nACC NUM \tBILL DATE \tNAME \tADDRESS \t\tARREARS \t\tCMR \t\tPMR \t\tT.UNIT \t\tC.CHARGE \t\tT.BILL\n");
         
-        tblModel = (DefaultTableModel) tblDisplay.getModel(); 
+        tblModel = (DefaultTableModel) tableDisplay.getModel(); 
         tblModel.setRowCount(0);
         
         try 
         {
-            
-            bs = billOperation.displayAllRecord();
+            //return data in form of arraylist bill
+            bs = billOperation.displayAllRecord();//call displayallrecord from billoperation
             for (int i=0; i<bs.size(); i++)
             {
                 String accountnumber = String.valueOf(bs.get(i).getAccountnumber());
@@ -416,11 +422,11 @@ public class BillGUI extends javax.swing.JFrame {
                 String totalunit = String.valueOf(bs.get(i).getTotalunit());
                 String currentcharge = String.valueOf(bs.get(i).getCurrentcharge()); 
                 String totalbill = String.valueOf(bs.get(i).getTotalbill());
-                taDisplay.append(accountnumber+"\t"+billdate+"\t"+name+"\t"+address+"\t\t"+arrears+"\t\t"+currentmeterreading+"\t\t"+previousmeterreading+"\t\t"+totalunit+"\t\t"+currentcharge+"\t\t"+totalbill+"\n");
-                System.out.printf("%-6d %-25s %-10s %-25s %-10s %8.2f %8.2f  %8.2f  %8.2f \n",bs.get(i).getAccountnumber(),billdate, name, address, bs.get(i).getArrears(), bs.get(i).getCurrentmeterreading(), bs.get(i).getPreviousmeterreading(), bs.get(i).getTotalunit(), bs.get(i).getCurrentcharge(), bs.get(i).getTotalbill());
+                txtareaDisplay.append(accountnumber+"\t"+billdate+"\t"+name+"\t"+address+"\t\t"+arrears+"\t\t"+currentmeterreading+"\t\t"+previousmeterreading+"\t\t"+totalunit+"\t\t"+currentcharge+"\t\t"+totalbill+"\n");
+                System.out.printf("%-6d \t\t %-25s \t\t %-10s \t\t %-25s \t\t %-10f \t\t %8.2f \t\t %8.2f \t\t %8.2f \t\t %8.2f \t\t %8.2f \n",bs.get(i).getAccountnumber(),billdate, name, address, bs.get(i).getArrears(), bs.get(i).getCurrentmeterreading(), bs.get(i).getPreviousmeterreading(), bs.get(i).getTotalunit(), bs.get(i).getCurrentcharge(), bs.get(i).getTotalbill());
                 
                 String [] data = {accountnumber, billdate, name, address, arrears, currentmeterreading, previousmeterreading, totalunit, currentcharge, totalbill};
-                tblModel.addRow(data); // add data into Jtable name
+                tblModel.addRow(data); // add data into Jtable
                 
             }
         } catch (IOException ex) 
@@ -433,13 +439,13 @@ public class BillGUI extends javax.swing.JFrame {
     }
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        
         BillOperation billOperation = new BillOperation();
         
-        int accountnumber = Integer.parseInt(tfaccnum.getText());
+        int accountnumber = Integer.parseInt(tfaccnum.getText());//get data in String from textfield acc num and convert into integer
         System.out.println("search staffno = "+accountnumber);
-        
-        Bill record = null;
+        //comparison
+        Bill record = null;//if it is null
         try
         {    
             record = billOperation.findRecord(accountnumber);
@@ -447,7 +453,7 @@ public class BillGUI extends javax.swing.JFrame {
         {
             System.out.println(ex.getMessage());
         }
-        if (record != null)
+        if (record != null)//if it is not null
         {
             accountnumber = record.getAccountnumber();
             String billdate = record.getBilldate();
@@ -460,7 +466,7 @@ public class BillGUI extends javax.swing.JFrame {
             double currentcharge = record.getCurrentcharge();
             double totalbill = record.getTotalbill();
             
-            tfaccnum.setText(String.valueOf(accountnumber));
+            tfaccnum.setText(String.valueOf(accountnumber));//set in txt field
             tfbilldate.setText(billdate);
             tfname.setText(name);
             tfadd.setText(address);
@@ -472,15 +478,15 @@ public class BillGUI extends javax.swing.JFrame {
             tftbill.setText(String.valueOf(totalbill));
             
       
-            taDisplay.setText("BILLING RECORD\n");
-            taDisplay.append("\nACC NUM \tBILL DATE \tNAME \tADDRESS \tARREARS \tC.MeterReading \tP.MeterReading \tT.UNIT \tC.CHARGE \t\tT.BILL\n");
-            taDisplay.append(accountnumber+"\t"+billdate+"\t"+name+"\t"+address+"\t"+arrears+"\t"+currentmeterreading+"\t\t"+previousmeterreading+"\t\t"+totalunit+"\t"+currentcharge+"\t"+totalbill+"\n");
+            txtareaDisplay.setText("BILLING RECORD\n");
+            txtareaDisplay.append("\nACC NUM \tBILL DATE \tNAME \tADDRESS \tARREARS \tC.MeterReading \tP.MeterReading \tT.UNIT \tC.CHARGE \t\tT.BILL\n");
+            txtareaDisplay.append(accountnumber+"\t"+billdate+"\t"+name+"\t"+address+"\t"+arrears+"\t"+currentmeterreading+"\t\t"+previousmeterreading+"\t\t"+totalunit+"\t"+currentcharge+"\t\t"+totalbill+"\n");
             JOptionPane.showMessageDialog(null, "The record of "+accountnumber+" is found successfully");
         }
         else // if record == null
         {
             JOptionPane.showMessageDialog(null, "The record of "+accountnumber+" is not found");
-            taDisplay.setText("The record of account number = "+accountnumber+" is not found");
+            txtareaDisplay.setText("The record of account number = "+accountnumber+" is not found");
         }
             
             
@@ -488,17 +494,17 @@ public class BillGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        
         BillOperation billOperation = new BillOperation();
-        ArrayList <Bill> bs = new ArrayList <Bill>();
-        Bill b = null;
+        ArrayList <Bill> bs = new ArrayList <Bill>();//declare new array list //each index keep on object bs from class <Bill>
+        Bill b = null;//to display nothing
         
         int accountnumber = Integer.parseInt(tfaccnum.getText());
         System.out.println("search account number = "+accountnumber);
         
         try
         {
-            bs = billOperation.readAllRecordFromFile(); // read all records in text file and store it in arraylist
+            bs = billOperation.readAllRecordFromFile(); 
             for(int i=0; i<bs.size(); i++)
             {
                 if (accountnumber == bs.get(i).getAccountnumber())
@@ -507,7 +513,7 @@ public class BillGUI extends javax.swing.JFrame {
                     bs.remove(i);
                     billOperation.addAllRecordInFile(bs);
                     JOptionPane.showMessageDialog(null, "The record of \n" + b.getAccountnumber()+"\n"+ b.getName()+ "\n has been deleted successfully");
-                    taDisplay.setText(" The record of "+ b.getAccountnumber() +"\t"+ b.getName()+ " has been deleted successfully");
+                    txtareaDisplay.setText(" The record of "+ b.getAccountnumber() +"\t"+ b.getName()+ " has been deleted successfully");
                 }
             }
             if (b == null)
@@ -525,7 +531,7 @@ public class BillGUI extends javax.swing.JFrame {
         
         BillOperation billOperation = new BillOperation();
         
-        int accountnumber = Integer.parseInt(tfaccnum.getText());
+        int accountnumber = Integer.parseInt(tfaccnum.getText());//get data in string from textfield acc num and convert to integer
         String billdate = tfbilldate.getText();
         String name = tfname.getText();
         String address = tfadd.getText(); 
@@ -536,27 +542,27 @@ public class BillGUI extends javax.swing.JFrame {
         double currentcharge = Double.parseDouble(tfcc.getText());
         double totalbill = arrears + currentcharge;
         
-        billing = new Bill(accountnumber, billdate, name, address, arrears, currentmeterreading, previousmeterreading, totalunit, currentcharge, totalbill);
+        billing = new Bill(accountnumber, billdate, name, address, arrears, currentmeterreading, previousmeterreading, totalunit, currentcharge, totalbill);//store into one object
         
-        ArrayList <Bill> bs = new ArrayList <Bill>();
+        ArrayList <Bill> bs = new ArrayList <Bill>();//read all record in text file
         try
         {
-            bs = billOperation.readAllRecordFromFile();
+            bs = billOperation.readAllRecordFromFile();//read all in text file and keep in array list
         }
         catch (IOException ex)
         {
             System.out.println(ex.getMessage());
         }
         
-        for (int i=0; i<bs.size(); i++)
+        for (int i=0; i<bs.size(); i++)//comparison
         {
-            if (billing.getAccountnumber() == bs.get(i).getAccountnumber())
+            if (billing.getAccountnumber() == bs.get(i).getAccountnumber())//if the record is same then cn update in arraylist
                 bs.set(i, billing); // update record in arraylist
         }
         
         try
         {
-            billOperation.addAllRecordInFile(bs);
+            billOperation.addAllRecordInFile(bs);//store in file
             JOptionPane.showMessageDialog(btnUpdate, " The record of "+ accountnumber + " has been updated successfully");
         }
         catch (IOException ex)
@@ -626,8 +632,8 @@ public class BillGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lbltunit;
     private javax.swing.JLabel lblcc;
     private javax.swing.JScrollPane jScrollPane3;
-    private JTextArea taDisplay;
-    private javax.swing.JTable tblDisplay;
+    private JTextArea txtareaDisplay;
+    private javax.swing.JTable tableDisplay;
     private javax.swing.JTextField tfadd;
     private javax.swing.JTextField tfpmr;
     private javax.swing.JTextField tftunit;

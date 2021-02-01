@@ -78,7 +78,7 @@ public class Tariff extends JFrame {
 		lblNewLabel.setBounds(121, 11, 356, 150);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("TNB BILLING SYSTEM");
+		JButton btnNewButton = new JButton("BILLING SYSTEM");
 		btnNewButton.setFont(new Font("Bodoni MT", Font.BOLD, 12));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -91,7 +91,7 @@ public class Tariff extends JFrame {
 		});
 		btnNewButton.setBackground(new Color(221, 160, 221));
 		btnNewButton.setForeground(Color.BLACK);
-		btnNewButton.setBounds(213, 311, 159, 35);
+		btnNewButton.setBounds(213, 311, 145, 35);
 		contentPane.add(btnNewButton);
 		
 		JLabel lblNewLabel_1 = new JLabel("Electricity Tariff Information");
